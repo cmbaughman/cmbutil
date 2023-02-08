@@ -4,6 +4,7 @@
   "description": "This is a package of reusable bits for convenience",
   "main": "index.js",
   "scripts": {
+    "clean": "rm -rf ./documentation/*",
     "test": "npx jest --coverage",
     "docs": "npx jsdoc index.js -d documentation"
   },
