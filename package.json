@@ -7,7 +7,7 @@
     "clean": "rm -rf ./documentation/*",
     "test": "npx jest --coverage",
     "docs": "npx jsdoc index.js -d documentation",
-    "semantic-release": "semantic-release"
+    "semantic-release": "npx semantic-release"
   },
   "release": {
     "branches": [
