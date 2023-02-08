@@ -1,12 +1,13 @@
 {
   "name": "cmbutil",
-  "version": "1.0.2",
+  "version": "0.0.0-development",
   "description": "This is a package of reusable bits for convenience",
   "main": "index.js",
   "scripts": {
     "clean": "rm -rf ./documentation/*",
     "test": "npx jest --coverage",
-    "docs": "npx jsdoc index.js -d documentation"
+    "docs": "npx jsdoc index.js -d documentation",
+    "semantic-release": "semantic-release"
   },
   "release": {
     "branches": [
@@ -28,5 +29,9 @@
     "jest": "^29.4.2",
     "jsdoc": "^4.0.0",
     "semantic-release": "^20.1.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cmbaughman/cmbutil.git"
   }
 }
