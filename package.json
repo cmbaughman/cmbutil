@@ -4,10 +4,10 @@
   "description": "This is a package of reusable bits for convenience",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "npx jest --coverage"
   },
   "keywords": [
-    "cmbdev"
+    "cmbdev", "javascript", "util", "utility"
   ],
   "author": "cmbdev <chrisb@urlinsgroup.com>",
   "license": "MIT",

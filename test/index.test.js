@@ -1,5 +1,10 @@
 const util = require('cmbutil');
 
+test('should return a sanatized string for given BigInt', () => {
+  const bigNum = BigInt(9007199254740991);
+  expect(util.sanitize(bigNum)).toBe('9007199254740991');
+});
+
 test('Should return true for isNullOrEmpty', () => {
   let tt = '';
   expect(util.isNullOrEmpty(tt)).toBe(true);
@@ -31,19 +36,32 @@ test('Should return a month name', () => {
 
 test('Receive a valid date', () => {
   let tt = '20221010';
-  let dte = util.getDate(tt);
-  expect(dte instanceof Date).toBe(true);
+  expect(util.getDate(tt) instanceof Date).toBe(true);
+
+  tt = '2023-11-11';
+  expect(util.getDate(tt) instanceof Date).toBe(true);
 
   tt = '';
-  expect(util.getDate(tt) instanceof Date).toBe(false);
+  expect(util.getDate(tt) instanceof Date).toBe(true);
 
   tt = 20221010;
+  expect(util.getDate(tt) instanceof Date).toBe(true);
+
+  tt = null;
   expect(util.getDate(tt) instanceof Date).toBe(true);
 });
 
 test('should return the id value from the example url', () => {
   // NOTE: No conversion is performed. These values will always be strings.
   expect(util.getQueryParam('id', 'http://example.com?s=5&id=10')).toBe('10');
+
+  let site = 'https://example.com?s=5';
+  const url = new URL(site);
+  expect(util.getQueryParam('s', url)).toBe('5');
+
+  expect(util.getQueryParam('s', 'https://test.com/')).toBeNull();
+
+  expect(util.getQueryParam('s', null)).toBeNull();
 });
 
 test('should return the 2 arrays below merged', () => {
@@ -77,4 +95,21 @@ test('should return a string with a proper name capitalized', () => {
 test('should remove the non-letter characters', () => {
   let name = 'Test1';
   expect(util.stripNonAlpha(name)).toBe('Test');
+});
+
+test('should return a string with invalid characters removed for Salesforce SOSL', () => {
+  let str = 'Test?!';
+  expect(util.escapeSoslStr(str)).toBe('Test\\?\\!');
+});
+
+test('should return an array of years starting 4 years before now.', () => {
+  expect(util.getYears().length).toBe(5);
+});
+
+test('should return a standard date string from a crazy Salesforce ISO-8601 formatted date.', () => {
+  let datStr = '2023-05-23T14:00:00.000Z';
+  expect(util.getSf2JsDate(datStr)).toBe('2023-05-23');
+
+  datStr = '';
+  expect(util.getSf2JsDate(datStr)).toBeNull();
 });
