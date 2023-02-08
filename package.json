@@ -1,6 +1,6 @@
 {
   "name": "cmbutil",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "This is a package of reusable bits for convenience",
   "main": "index.js",
   "scripts": {
