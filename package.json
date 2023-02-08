@@ -1,0 +1,17 @@
+{
+  "name": "cmbutil",
+  "version": "1.0.0",
+  "description": "This is a package of reusable bits for convenience",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "cmbdev"
+  ],
+  "author": "cmbdev <chrisb@urlinsgroup.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "jest": "^29.4.2"
+  }
+}
