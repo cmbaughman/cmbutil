@@ -34,6 +34,23 @@ test('Should return a month name', () => {
   expect(util.getMonthName(5)).toBe('May');
 });
 
+test('Should return an array of all 12 long month names', () => {
+  expect(util.getAllMonthNames()).toStrictEqual([
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December'
+  ]);
+});
+
 test('Receive a valid date', () => {
   let tt = '20221010';
   expect(util.getDate(tt) instanceof Date).toBe(true);

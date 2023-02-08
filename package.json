@@ -4,14 +4,19 @@
   "description": "This is a package of reusable bits for convenience",
   "main": "index.js",
   "scripts": {
-    "test": "npx jest --coverage"
+    "test": "npx jest --coverage",
+    "docs": "npx jsdoc index.js -d documentation"
   },
   "keywords": [
-    "cmbdev", "javascript", "util", "utility"
+    "cmbdev",
+    "javascript",
+    "util",
+    "utility"
   ],
   "author": "cmbdev <chrisb@urlinsgroup.com>",
   "license": "MIT",
   "devDependencies": {
-    "jest": "^29.4.2"
+    "jest": "^29.4.2",
+    "jsdoc": "^4.0.0"
   }
 }

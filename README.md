@@ -15,4 +15,14 @@ npm install cmbutil --save
 ## Build from source
 
 Clone repository: `git clone https://github.com/cmbaughman/cmbutil.git`
+
 Clone with `gh`: `gh repo clone cmbaughman/cmbutil`
+
+## Generate documentation
+
+This project uses `jsdoc` for documentation. To regenerate the documentation, (be
+sure to use jsdoc syntax), use the following command:
+
+```
+npm run docs
+```
