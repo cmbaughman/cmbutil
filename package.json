@@ -23,7 +23,7 @@
     "util",
     "utility"
   ],
-  "author": "cmbdev <chrisb@urlinsgroup.com>",
+  "author": "cmbdev <cmbdev@gmx.com>",
   "license": "MIT",
   "devDependencies": {
     "jest": "^29.4.2",
