@@ -11,9 +11,9 @@
   ],
   "scripts": {
     "build": "rollup -c",
-    "clean": "rm -rf ./documentation/*",
+    "clean": "rm -rf ./documentation/* && rm -rf ./dist/*",
     "test": "npx jest --coverage",
-    "docs": "npx jsdoc index.js -d documentation",
+    "docs": "npm run clean && npm run built && npx jsdoc ./src/index.ts -d documentation",
     "semantic-release": "npx semantic-release"
   },
   "release": {

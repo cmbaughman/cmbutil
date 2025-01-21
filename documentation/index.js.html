@@ -26,199 +26,202 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>module.exports = {
-  /** Converts BigInt properties of an object to string. Made to use in a bugfix for prisma.io */
-  sanitize(obj) {
-      const safe = JSON.stringify(obj, (_key, value) => {
-        return typeof value === 'bigint' ? value = value.toString() : value;
-      });
-      return JSON.parse(safe);
-  },
+            <pre class="prettyprint source linenums"><code>'use strict';
 
-  /** Escape a string using Salesforce SOSL syntax. */
-  escapeSoslStr(str) {
-    const entityMap = {
-      '?': '?',
-      '&amp;': '&amp;',
-      '!': '!',
-      '^': '^',
-      '~': '~',
-      '-': '-'
-    };
-
-    return String(str).replace(/[?&amp;!^~-]/g, (s) => {
-      return '\\' + entityMap[s];
+/** Converts BigInt properties of an object to string. Made to use in a bugfix for prisma.io */
+const sanitize = (obj) => {
+    const safe = JSON.stringify(obj, (_key, value) => {
+        return typeof value === 'bigint' ? value.toString() : value;
     });
-  },
-
-  /**
-   * Test if var is null of empty.
-   * @param {*} tmp
-   * @returns {boolean}
-   */
-  isNullOrEmpty(tmp) {
+    return JSON.parse(safe);
+};
+/** Escape a string using Salesforce SOSL syntax. */
+const escapeSoslStr = (str) => {
+    const entityMap = {
+        '?': '\\?',
+        '&amp;': '\\&amp;',
+        '!': '\\!',
+        '^': '\\^',
+        '~': '\\~',
+        '-': '\\-'
+    };
+    return String(str).replace(/[?&amp;!^~-]/g, (s) => {
+        return entityMap[s];
+    });
+};
+/**
+* Test if var is null of empty.
+* @param {*} tmp
+* @returns {boolean}
+*/
+const isNullOrEmpty = (tmp) => {
     return (!tmp || 0 === tmp.length);
-  },
-
-  /**
-   * Test if var is undefined.
-   * @param {*} tmp
-   * @returns {boolean}
-   */
-  isUndefined(tmp) {
-    return (typeof(tmp) === 'undefined');
-  },
-
-  /**
-   * Test if variable is numeric.
-   * @param {*} n
-   * @returns {boolean}
-   */
-  isNumeric(n) {
+};
+/**
+* Test if var is undefined.
+* @param {*} tmp
+* @returns {boolean}
+*/
+const isUndefined = (tmp) => {
+    return (typeof (tmp) === 'undefined');
+};
+/**
+* Test if variable is numeric.
+* @param {*} n
+* @returns {boolean}
+*/
+const isNumeric = (n) => {
     return !isNaN(parseFloat(n)) &amp;&amp; isFinite(n);
-  },
-
-  /**
-   * Merge arrays.
-   * @param {Array} a
-   * @param {Array} b
-   * @param {string} property (Can be empty string)
-   * @returns {Array}
-   */
-  mergeArrays(a, b, prop) {
+};
+/**
+* Merge arrays.
+* @param {Array} a
+* @param {Array} b
+* @param {string} property (Can be empty string)
+* @returns {Array}
+*/
+const mergeArrays = (a, b, prop) => {
     let reduced = a.filter(aitem => !b.find(bitem => aitem[prop] === bitem[prop]));
     return reduced.concat(b);
-  },
-
-  /**
-   * Return value of a URL's query string parameter
-   * @param {string} name
-   * @param {string|URL} url string or URL object
-   * @returns {*} value of name
-   */
-  getQueryParam(name, url) {
-    if (this.isNullOrEmpty(url)) return null;
+};
+/**
+* Return value of a URL's query string parameter
+* @param {string} name
+* @param {string|URL} url string or URL object
+* @returns {*} value of name
+*/
+const getQueryParam = (name, url) => {
+    if (isNullOrEmpty(url))
+        return null;
     name = name.replace(/[\[\]]/g, "\\$&amp;");
-    var regex = new RegExp("[?&amp;]" + name + "(=([^&amp;#]*)|&amp;|#|$)"),
-        results = regex.exec(url);
-    if (!results) return null;
+    var regex = new RegExp("[?&amp;]" + name + "(=([^&amp;#]*)|&amp;|#|$)"), results = regex.exec(url);
+    if (!results)
+        return null;
     return decodeURIComponent(results[2].replace(/\+/g, " "));
-  },
-
-  /**
-   * Return month name
-   * @param {number} month
-   * @returns {string}
-   */
-  getMonthName(month) {
+};
+/**
+* Return month name
+* @param {number} month
+* @returns {string}
+*/
+const getMonthName = (month) => {
     const dd = new Date();
-    dd.setMonth(month-1);
+    dd.setMonth(month - 1);
     return dd.toLocaleString([], { month: 'long' });
-  },
-
-  /**
-   * Return an array of all the month names.
-   * @returns {Array}
-   */
-  getAllMonthNames() {
+};
+/**
+* Return an array of all the month names.
+* @returns {Array}
+*/
+const getAllMonthNames = () => {
     const dd = new Date();
     let tmp = [];
     for (let index = 1; index &lt;= 12; index++) {
-      dd.setMonth(index-1);
-      tmp.push(dd.toLocaleString([], { month: 'long' }));
+        dd.setMonth(index - 1);
+        tmp.push(dd.toLocaleString([], { month: 'long' }));
     }
     return tmp;
-  },
-
-  /**
-   *
-   * @param {*} v String representing date, Date object
-   * @returns {string} YYYY-mm-dd formatted date string.
-   */
-  getDateString(v) {
-    if (this.isNullOrEmpty(v)) {
-      return `${new Date().toLocaleDateString('en-us', { year: 'numeric'})}-${new Date().toLocaleDateString('en-us', { month: '2-digit'})}-${new Date().toLocaleDateString('en-us', { day: '2-digit'})}`;
+};
+/**
+*
+* @param {*} v String representing date, Date object
+* @returns {string} yyyy-mm-dd formatted date string.
+*/
+const getDateString = (v) => {
+    if (isNullOrEmpty(v)) {
+        const today = new Date();
+        return `${today.toLocaleDateString('en-us', { year: 'numeric' })}-${today.toLocaleDateString('en-us', { month: '2-digit' })}-${today.toLocaleDateString('en-us', { day: '2-digit' })}`;
     }
-
-    return `${new Date(v).toLocaleDateString('en-us', { year: 'numeric'})}-${new Date(v).toLocaleDateString('en-us', { month: '2-digit'})}-${new Date(v).toLocaleDateString('en-us', { day: '2-digit'})}`;
-  },
-
-  /**
-   * Improved version of Date.parse. Takes string or number.
-   * @param {*} v representation of date
-   * @returns {Date} object
-   */
-  getDate(v) {
+    const dateObj = getDate(v); // Use getDate to convert to Date object
+    return `${dateObj.toLocaleDateString('en-us', { year: 'numeric' })}-${dateObj.toLocaleDateString('en-us', { month: '2-digit' })}-${dateObj.toLocaleDateString('en-us', { day: '2-digit' })}`;
+};
+/**
+* Improved version of Date.parse. Takes string or number.
+* @param {*} v representation of date
+* @returns {Date} object
+*/
+const getDate = (v) => {
     let yr, mo, dy;
-
-    switch (typeof(v)) {
-      case 'number':
-        let tmp = v.toString();
-        yr = tmp.slice(0, 4);
-        dy = tmp.slice(6, 8);
-        moTmp = parseInt(tmp.slice(4, 6), 10);
-        mo = `${moTmp}`;
-        return new Date(yr, mo, dy);
-      case 'string':
-        if ((v.indexOf('-') &lt; 0) &amp;&amp; (v.indexOf('/') &lt; 0)) {
-          yr = v.slice(0, 4);
-          mo = v.slice(4, 6);
-          dy = v.slice(6, 8);
-          return new Date(yr, mo, dy);
-        }
+    switch (typeof (v)) {
+        case 'number':
+            let tmp = v.toString();
+            yr = parseInt(tmp.slice(0, 4), 10);
+            dy = parseInt(tmp.slice(6, 8), 10);
+            mo = parseInt(tmp.slice(4, 6), 10) - 1;
+            return new Date(yr, mo, dy);
+        case 'string':
+            if ((v.indexOf('-') &lt; 0) &amp;&amp; (v.indexOf('/') &lt; 0)) {
+                yr = parseInt(v.slice(0, 4), 10);
+                mo = parseInt(v.slice(4, 6), 10) - 1;
+                dy = parseInt(v.slice(6, 8), 10);
+                return new Date(yr, mo, dy);
+            }
     }
-
+    // If input is a date string or number, this will handle it.
+    // If not, it will return an "invalid date" object.
     return new Date(v);
-  },
-
-  /**
-   * Get an array of the last 5 years, including the current.
-   * @returns {Array}
-   */
-  getYears() {
+};
+/**
+* Get an array of the last 5 years, including the current.
+* @returns {Array}
+*/
+const getYears = () => {
     const current = new Date().getFullYear();
     const base = current - 4;
     const years = [];
-
     for (let indx = base; indx &lt;= current; indx++) {
-      years.push(indx);
+        years.push(indx);
     }
-
     return years;
-  },
-
-  /**
-   * Make first letter of string propper case.
-   * @param {string} d
-   * @returns {string}
-   */
-  properCase(d) {
+};
+/**
+* Make first letter of string propper case.
+* @param {string} d
+* @returns {string}
+*/
+const properCase = (d) => {
     return d.charAt(0).toUpperCase() + d.slice(1);
-  },
-
-  /**
-   * Take ISO-8601 formatted date and return YYYY-mm-dd
-   * @param {string} v date string formatted as ISO-8601
-   * @returns {string}
-   */
-  getSf2JsDate(v) {
-    if (this.isNullOrEmpty(v)) {
-      return null;
+};
+/**
+* Take ISO-8601 formatted date and return yyyy-mm-dd
+* @param {string} v date string formatted as ISO-8601
+* @returns {string}
+*/
+const getSf2JsDate = (v) => {
+    if (isNullOrEmpty(v)) {
+        return null;
     }
-
     let dte = Date.parse(v);
     return new Date(dte).toISOString().split('T')[0];
-  },
-
-  /**
-   * Removes non-alphabet characters.
-   * @param {string} str
-   * @returns {string}
-   */
-  stripNonAlpha(str) {
-    return str.replace(/[^a-zA-Z ]/g, '');
-  }
 };
+/**
+* Removes non-alphabet characters.
+* @param {string} str
+* @returns {string}
+*/
+const stripNonAlpha = (str) => {
+    return str.replace(/[^a-zA-Z ]/g, '');
+};
+const cmbutil = {
+    sanitize,
+    escapeSoslStr,
+    isNullOrEmpty,
+    isUndefined,
+    isNumeric,
+    mergeArrays,
+    getQueryParam,
+    getMonthName,
+    getAllMonthNames,
+    getDateString,
+    getDate,
+    getYears,
+    properCase,
+    getSf2JsDate,
+    stripNonAlpha
+};
+
+module.exports = cmbutil;
+//# sourceMappingURL=index.js.map
 </code></pre>
         </article>
     </section>
@@ -229,13 +232,13 @@
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#escapeSoslStr">escapeSoslStr</a></li><li><a href="global.html#getAllMonthNames">getAllMonthNames</a></li><li><a href="global.html#getDate">getDate</a></li><li><a href="global.html#getDateString">getDateString</a></li><li><a href="global.html#getMonthName">getMonthName</a></li><li><a href="global.html#getQueryParam">getQueryParam</a></li><li><a href="global.html#getSf2JsDate">getSf2JsDate</a></li><li><a href="global.html#getYears">getYears</a></li><li><a href="global.html#isNullOrEmpty">isNullOrEmpty</a></li><li><a href="global.html#isNumeric">isNumeric</a></li><li><a href="global.html#isUndefined">isUndefined</a></li><li><a href="global.html#mergeArrays">mergeArrays</a></li><li><a href="global.html#properCase">properCase</a></li><li><a href="global.html#sanitize">sanitize</a></li><li><a href="global.html#stripNonAlpha">stripNonAlpha</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.0</a> on Wed Feb 08 2023 13:05:34 GMT-0500 (Eastern Standard Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.0</a> on Tue Jan 21 2025 14:52:30 GMT-0500 (Eastern Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>
