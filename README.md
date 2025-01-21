@@ -12,6 +12,22 @@ A small set of useful vanilla Javascript utilities you can use in anything.
 npm install cmbutil --save
 ```
 
+## Usage
+
+```javascript
+import cmbutil from 'cmbutil';
+
+const num = 123;
+if (cmbutil.isNumeric(num)) {
+  console.log(`${num} is numeric`);
+}
+
+const myString = "hello world!";
+const properCasedString = cmbutil.properCase(myString);
+console.log(properCasedString);
+```
+
+
 ## Build from source
 
 Clone repository: `git clone https://github.com/cmbaughman/cmbutil.git`

@@ -95,7 +95,7 @@ test('should return object filtered from bigints', () => {
 });
 
 test('should return friendly formatted date', () => {
-  const ny = Date.parse('2023-02-02'); // 1672531200000
+  const ny = '20230202'
   const dateStr = util.getDateString(ny);
   // Format date
   expect(dateStr).toBe('2023-02-02');
