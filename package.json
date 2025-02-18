@@ -10,10 +10,10 @@
     "dist"
   ],
   "scripts": {
-    "build": "rollup -c",
+    "build": "npm run clean && rollup -c",
     "clean": "rm -rf ./documentation/* && rm -rf ./dist/*",
     "test": "npx jest --coverage",
-    "docs": "npm run clean && npm run built && npx jsdoc ./src/index.ts -d documentation",
+    "docs": "npm run clean && npm run build && npx jsdoc ./dist/index.js -d documentation",
     "semantic-release": "npx semantic-release"
   },
   "release": {
